@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     var mapView = GMSMapView()
     var locationManager = CLLocationManager()
     private let baseUrl = "https://maps.googleapis.com/maps/api/directions/json"
+    private let ginzaSixLocation = "35.669798,139.7639302"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,17 +28,10 @@ class ViewController: UIViewController {
         mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         mapView.isMyLocationEnabled = true
         view = mapView
-        
-        getDirection(destination: "35.6910964,139.7655842",
-                     start: "35.681223,139.767059",
-                     completion: { [weak self] direction in
-                        DispatchQueue.main.async {
-                            self?.showRoute(direction)
-                        }
-        })
     }
     
     private func requestLoacion() {
+        locationManager.delegate = self
         // ユーザにアプリ使用中のみ位置情報取得の許可を求めるダイアログを表示
         locationManager.requestWhenInUseAuthorization()
         // 常に取得したい場合はこちら↓
@@ -85,5 +79,35 @@ class ViewController: UIViewController {
         let polyline = GMSPolyline(path: path)
         polyline.strokeWidth = 8.0
         polyline.map = mapView
+    }
+}
+
+extension ViewController: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedAlways, .authorizedWhenInUse:
+            manager.requestLocation()
+        case .notDetermined:
+            manager.requestWhenInUseAuthorization()
+        default:
+            return
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        let startLocation = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
+        getDirection(destination: ginzaSixLocation,
+                     start: startLocation,
+                     completion: { [weak self] direction in
+                        DispatchQueue.main.async {
+                            self?.showRoute(direction)
+                        }
+        })
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
     }
 }
