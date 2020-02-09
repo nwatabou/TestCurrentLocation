@@ -13,8 +13,8 @@ class ViewController: UIViewController {
     
     var mapView = GMSMapView()
     var locationManager = CLLocationManager()
-    private let baseUrl = "https://maps.googleapis.com/maps/api/directions/json"
-    private let ginzaSixLocation = "35.669798,139.7639302"
+    let baseUrl = "https://maps.googleapis.com/maps/api/directions/json"
+    let ginzaSixLocation = "35.669798,139.7639302"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +44,7 @@ class ViewController: UIViewController {
         
         components.queryItems = [
             URLQueryItem(name: "key", value: GOOGLE_API_KEY),
+            URLQueryItem(name: "mode", value: "walking"),
             URLQueryItem(name: "origin", value: startLocation),
             URLQueryItem(name: "destination", value: destination)
         ]
