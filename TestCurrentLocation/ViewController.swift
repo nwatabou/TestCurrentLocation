@@ -70,16 +70,26 @@ class ViewController: UIViewController {
         guard let route = direction.routes.first, let leg = route.legs.first else { return }
         let path = GMSMutablePath()
         for step in leg.steps {
-            guard let startLat = CLLocationDegrees(exactly: step.startLocation.lat),
-                let startLng = CLLocationDegrees(exactly: step.startLocation.lng) ,
-                let endLat = CLLocationDegrees(exactly: step.endLocation.lat),
-                let endLng = CLLocationDegrees(exactly: step.endLocation.lng) else { continue }
-            path.add(CLLocationCoordinate2D(latitude: startLat, longitude: startLng))
-            path.add(CLLocationCoordinate2D(latitude: endLat, longitude: endLng))
+            path.add(CLLocationCoordinate2D(latitude: step.startLocation.lat,
+                                            longitude: step.startLocation.lng))
+            path.add(CLLocationCoordinate2D(latitude: step.endLocation.lat,
+                                            longitude: step.endLocation.lng))
         }
         let polyline = GMSPolyline(path: path)
-        polyline.strokeWidth = 8.0
+        polyline.strokeWidth = 4.0
         polyline.map = mapView
+        updateCameraZoom(startLat: leg.startLocation.lat,
+                         startLng: leg.startLocation.lng,
+                         endLat: leg.endLocation.lat,
+                         endLng: leg.endLocation.lng)
+    }
+    
+    private func updateCameraZoom(startLat: Double, startLng: Double, endLat: Double, endLng: Double) {
+        let startCoordinate = CLLocationCoordinate2D(latitude: startLat, longitude: startLng)
+        let endCoordinate = CLLocationCoordinate2D(latitude: endLat, longitude: endLng)
+        let bounds = GMSCoordinateBounds(coordinate: startCoordinate, coordinate: endCoordinate)
+        let cameraUpdate = GMSCameraUpdate.fit(bounds, withPadding: 16.0)
+        mapView.moveCamera(cameraUpdate)
     }
 }
 
