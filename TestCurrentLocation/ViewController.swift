@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     
     var mapView = GMSMapView()
     var locationManager = CLLocationManager()
+    private let baseUrl = "https://maps.googleapis.com/maps/api/directions/json"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +27,10 @@ class ViewController: UIViewController {
         mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         mapView.isMyLocationEnabled = true
         view = mapView
+        
+        getDirection(for: "35.6910964,139.7655842", start: "35.681223,139.767059", completion: { direction in
+            print(direction)
+        })
     }
     
     private func requestLoacion() {
@@ -33,5 +38,32 @@ class ViewController: UIViewController {
         locationManager.requestWhenInUseAuthorization()
         // 常に取得したい場合はこちら↓
         // locationManager.requestAlwaysAuthorization()
+    }
+    
+    private func getDirection(for destination: String, start startLocation: String, completion: @escaping (Direction) -> Void) {
+        
+        guard var components = URLComponents(string: baseUrl) else { return }
+        
+        components.queryItems = [
+            URLQueryItem(name: "key", value: GOOGLE_API_KEY),
+            URLQueryItem(name: "origin", value: startLocation),
+            URLQueryItem(name: "destination", value: destination)
+        ]
+        
+        guard let url = components.url else { return }
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let data = data {
+                let decorder = JSONDecoder()
+                do {
+                    let direction = try decorder.decode(Direction.self, from: data)
+                    completion(direction)
+                } catch {
+                    print(error.localizedDescription)
+                }
+            } else {
+                print(error ?? "Error")
+            }
+        }
+        task.resume()
     }
 }
