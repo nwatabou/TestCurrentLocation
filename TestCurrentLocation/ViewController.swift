@@ -28,8 +28,12 @@ class ViewController: UIViewController {
         mapView.isMyLocationEnabled = true
         view = mapView
         
-        getDirection(for: "35.6910964,139.7655842", start: "35.681223,139.767059", completion: { direction in
-            print(direction)
+        getDirection(destination: "35.6910964,139.7655842",
+                     start: "35.681223,139.767059",
+                     completion: { [weak self] direction in
+                        DispatchQueue.main.async {
+                            self?.showRoute(direction)
+                        }
         })
     }
     
@@ -40,7 +44,7 @@ class ViewController: UIViewController {
         // locationManager.requestAlwaysAuthorization()
     }
     
-    private func getDirection(for destination: String, start startLocation: String, completion: @escaping (Direction) -> Void) {
+    private func getDirection(destination: String, start startLocation: String, completion: @escaping (Direction) -> Void) {
         
         guard var components = URLComponents(string: baseUrl) else { return }
         
@@ -65,5 +69,21 @@ class ViewController: UIViewController {
             }
         }
         task.resume()
+    }
+    
+    private func showRoute(_ direction: Direction) {
+        guard let route = direction.routes.first, let leg = route.legs.first else { return }
+        let path = GMSMutablePath()
+        for step in leg.steps {
+            guard let startLat = CLLocationDegrees(exactly: step.startLocation.lat),
+                let startLng = CLLocationDegrees(exactly: step.startLocation.lng) ,
+                let endLat = CLLocationDegrees(exactly: step.endLocation.lat),
+                let endLng = CLLocationDegrees(exactly: step.endLocation.lng) else { continue }
+            path.add(CLLocationCoordinate2D(latitude: startLat, longitude: startLng))
+            path.add(CLLocationCoordinate2D(latitude: endLat, longitude: endLng))
+        }
+        let polyline = GMSPolyline(path: path)
+        polyline.strokeWidth = 8.0
+        polyline.map = mapView
     }
 }

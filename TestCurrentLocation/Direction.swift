@@ -12,9 +12,9 @@ struct Direction: Codable {
     let routes: [Route]
     
     struct Route: Codable {
-        let legs: [Steps]
+        let legs: [Leg]
         
-        struct Steps: Codable {
+        struct Leg: Codable {
             let steps: [Step]
             
             struct Step: Codable {
