@@ -8,9 +8,55 @@
 
 import UIKit
 import GoogleMaps
+import GoogleMapsUtils
 
 class ViewController: UIViewController {
-    
+
+  // デフォルトの位置情報（仮で東京駅付近にしています）
+    let defaultPositionLat = 35.681223
+    let defaultPositionLng = 139.767059
+    private var mapView: GMSMapView!
+    /// Map 上に表示するマーカーを管理するためのプロパティ
+    private var clusterManager: GMUClusterManager!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // GoogleMapの初期位置
+        let camera = GMSCameraPosition.camera(withLatitude: defaultPositionLat, longitude: defaultPositionLng, zoom: 17.0)
+        mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
+        view = mapView
+
+        let iconGenerator = GMUDefaultClusterIconGenerator()
+        let algorithm = GMUNonHierarchicalDistanceBasedAlgorithm()
+        let renderer = GMUDefaultClusterRenderer(mapView: mapView, clusterIconGenerator: iconGenerator)
+        clusterManager = GMUClusterManager(map: mapView, algorithm: algorithm, renderer: renderer)
+
+        // マーカーをランダムに生成して Map 上に表示
+        generateClusterItems()
+    }
+
+    private func generateClusterItems() {
+        let extent = 0.01
+        for _ in 1...100 {
+            let lat = defaultPositionLat + extent * randomScale()
+            let lng = defaultPositionLng + extent * randomScale()
+            let item = POIItem(position: CLLocationCoordinate2DMake(lat, lng))
+            clusterManager.add(item)
+        }
+        // Map にマーカーを描画
+        clusterManager.cluster()
+    }
+
+    /// ランダムな位置にマーカーを表示するための乱数を生成
+    private func randomScale() -> Double {
+        return Double(arc4random()) / Double(UINT32_MAX) * 2.0 - 1.0
+    }
+}
+
+/*
+class ViewController: UIViewController {
+
     var mapView = GMSMapView()
     var locationManager = CLLocationManager()
     let baseUrl = "https://maps.googleapis.com/maps/api/directions/json"
@@ -122,3 +168,4 @@ extension ViewController: CLLocationManagerDelegate {
         print(error.localizedDescription)
     }
 }
+*/

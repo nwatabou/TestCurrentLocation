@@ -20,6 +20,7 @@
 		B910199823E6BC85004D273A /* TestCurrentLocationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B910199723E6BC85004D273A /* TestCurrentLocationUITests.swift */; };
 		B91019A623E6BE75004D273A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91019A523E6BE75004D273A /* Constants.swift */; };
 		B91019AA23E6E085004D273A /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91019A923E6E085004D273A /* Direction.swift */; };
+		B9A921D5240B8D140003F9EA /* POIItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A921D4240B8D140003F9EA /* POIItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		B910199923E6BC85004D273A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B91019A523E6BE75004D273A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B91019A923E6E085004D273A /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
+		B9A921D4240B8D140003F9EA /* POIItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POIItem.swift; sourceTree = "<group>"; };
 		E3B3F00228DA9CB13EB242E1 /* Pods-TestCurrentLocation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestCurrentLocation.release.xcconfig"; path = "Target Support Files/Pods-TestCurrentLocation/Pods-TestCurrentLocation.release.xcconfig"; sourceTree = "<group>"; };
 		F042289817D67E0915B7EFE0 /* Pods-TestCurrentLocation-TestCurrentLocationUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestCurrentLocation-TestCurrentLocationUITests.release.xcconfig"; path = "Target Support Files/Pods-TestCurrentLocation-TestCurrentLocationUITests/Pods-TestCurrentLocation-TestCurrentLocationUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -152,6 +154,7 @@
 				B910198323E6BC85004D273A /* Info.plist */,
 				B91019A523E6BE75004D273A /* Constants.swift */,
 				B91019A923E6E085004D273A /* Direction.swift */,
+				B9A921D4240B8D140003F9EA /* POIItem.swift */,
 			);
 			path = TestCurrentLocation;
 			sourceTree = "<group>";
@@ -418,6 +421,7 @@
 				B910197823E6BC82004D273A /* SceneDelegate.swift in Sources */,
 				B91019A623E6BE75004D273A /* Constants.swift in Sources */,
 				B91019AA23E6E085004D273A /* Direction.swift in Sources */,
+				B9A921D5240B8D140003F9EA /* POIItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

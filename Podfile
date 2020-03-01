@@ -6,6 +6,7 @@ target 'TestCurrentLocation' do
   use_frameworks!
 
   pod 'GoogleMaps'
+  pod 'Google-Maps-iOS-Utils'
 
   target 'TestCurrentLocationTests' do
     inherit! :search_paths
